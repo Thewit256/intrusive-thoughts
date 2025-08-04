@@ -1,65 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Intrusive Thoughts</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            background-color: #0e0e0e;
-            color: #e0e0e0;
-            font-family: Georgia, serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: #1a1a1a;
-            padding: 1rem;
-            text-align: center;
-        }
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-            color: teal;
-        }
-        header p {
-            margin: 0;
-            font-style: italic;
-            color: #aaa;
-        }
-        main {
-            padding: 2rem;
-        }
-        article {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #444;
-            padding-bottom: 1rem;
-        }
-        h2 {
-            color: #ffcc00;
-        }
-        footer {
-            background-color: #1a1a1a;
-            text-align: center;
-            padding: 1rem;
-            color: #888;
-            font-size: 0.8rem;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Intrusive Thoughts</title>
+<style>
+  :root {
+    --bg-dark: #0e0e0e;
+    --bg-light: #fefefe;
+    --text-dark: #e0e0e0;
+    --text-light: #222222;
+    --header-color: teal;
+    --accent-color: #ffcc00;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: Georgia, serif;
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  body.light {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+  }
+  header {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    text-align: center;
+  }
+  body.light header {
+    background-color: #ddd;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: var(--header-color);
+  }
+  header p {
+    margin: 0;
+    font-style: italic;
+    color: #aaa;
+  }
+  main {
+    padding: 1rem 2rem;
+    max-width: 700px;
+    margin: auto;
+  }
+  article.post {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 1rem;
+  }
+  body.light article.post {
+    border-color: #ccc;
+  }
+  h2 {
+    color: var(--accent-color);
+  }
+  footer {
+    background-color: #1a1a1a;
+    text-align: center;
+    padding: 1rem;
+    color: #888;
+    font-size: 0.8rem;
+  }
+  body.light footer {
+    background-color: #ddd;
+    color: #555;
+  }
+  .toggle-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    background-color: var(--header-color);
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  .toggle-btn:hover {
+    background-color: #0b6666;
+  }
+  .comments {
+    margin-top: 1rem;
+  }
+  .comment-input {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .comment-input textarea {
+    width: 100%;
+    height: 50px;
+    padding: 0.5rem;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+  }
+  .comment-input button {
+    margin-top: 0.5rem;
+    padding: 0.3rem 1rem;
+    font-weight: bold;
+    background-color: var(--header-color);
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .comment-input button:hover {
+    background-color: #0b6666;
+  }
+  .comment-list {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  .comment-list p {
+    background: #333;
+    padding: 0.3rem 0.5rem;
+    margin: 0.3rem 0;
+    border-radius: 3px;
+  }
+  body.light .comment-list p {
+    background: #eee;
+    color: #111;
+  }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Intrusive Thoughts</h1>
-        <p>by Out Spoken Wit</p>
-    </header>
-    <main>
-        <article>
-            <h2>Welcome to My Blog</h2>
-            <p>This is the beginning of a dark, honest, and creative journey. Stories that whisper what most dare not say.</p>
-        </article>
-    </main>
-    <footer>
-        &copy; 2025 Out Spoken Wit. All rights reserved.
-    </footer>
+<button class="toggle-btn" id="modeToggle">Light Mode</button>
+<header>
+  <h1>Intrusive Thoughts</h1>
+  <p>by Out Spoken Wit</p>
+</header>
+<main id="postsContainer">
+  <p>Loading posts...</p>
+</main>
+<footer>
+  &copy; 2025 Out Spoken Wit. All rights reserved.
+</footer>
+
+<script>
+// Toggle dark/light mode
+const modeToggle = document.getElementById('modeToggle');
+const body = document.body;
+
+function setMode(mode) {
+  if (mode === 'light') {
+    body.classList.add('light');
+    modeToggle.textContent = 'Dark Mode';
+    localStorage.setItem('mode', 'light');
+  } else {
+    body.classList.remove('light');
+    modeToggle.textContent = 'Light Mode';
+    localStorage.setItem('mode', 'dark');
+  }
+}
+
+modeToggle.addEventListener('click', () => {
+  if (body.classList.contains('light')) {
+    setMode('dark');
+  } else {
+    setMode('light');
+  }
+});
+
+// Load saved mode
+const savedMode = localStorage.getItem('mode') || 'dark';
+setMode(savedMode);
+
+// Load posts from posts.json
+async function loadPosts() {
+  try {
+    const res = await fetch('posts.json');
+    const posts = await res.json();
+    renderPosts(posts);
+  } catch (e) {
+    document.getElementById('postsContainer').innerHTML = '<p>Error loading posts.</p>';
+  }
+}
+
+function renderPosts(posts) {
+  const container = document.getElementById('postsContainer');
+  container.innerHTML = ''; // clear loading text
+
+  posts.forEach(post => {
+    const article = document.createElement('article');
+    article.className = 'post';
+
+    const title = document.createElement('h2');
+    title.textContent = post.title;
+    article.appendChild(title);
+
+    const date = document.createElement('small');
+    date.textContent = new Date(post.date).toLocaleDateString();
+    article.appendChild(date);
+
+    const content = document.createElement('p');
+    content.textContent = post.content;
+    article.appendChild(content);
+
+    // Comment Section
+    const commentsDiv = document.createElement('div');
+    commentsDiv.className = 'comments';
+
+    const commentsTitle = document.createElement('h3');
+    commentsTitle.textContent = 'Comments';
+    commentsDiv.appendChild(commentsTitle);
+
+    // Comments List
+    const commentList = document.createElement('div');
+    commentList.className = 'comment-list';
+    commentsDiv.appendChild(commentList);
+
+    // Load comments from localStorage
+    const commentsKey = 'comments_' + post.id;
+    let comments = JSON.parse(localStorage.getItem(commentsKey)) || [];
+    updateCommentList(commentList, comments);
+
+    // Comment Input
+    const commentInputDiv = document.createElement('div');
+    commentInputDiv.className = 'comment-input';
+
+    const textarea = document.createElement('textarea');
+    textarea.placeholder = 'Write a comment...';
+    commentInputDiv.appendChild(textarea);
+
+    const submitBtn = document.createElement('button');
+    submitBtn.textContent = 'Add Comment';
+    commentInputDiv.appendChild(submitBtn);
+
+    submitBtn.addEventListener('click', () => {
+      const commentText = textarea.value.trim();
+      if (commentText) {
+        comments.push(commentText);
+        localStorage.setItem(commentsKey, JSON.stringify(comments));
+        updateCommentList(commentList, comments);
+        textarea.value = '';
+      }
+    });
+
+    commentsDiv.appendChild(commentInputDiv);
+    article.appendChild(commentsDiv);
+
+    container.appendChild(article);
+  });
+}
+
+function updateCommentList(container, comments) {
+  container.innerHTML = '';
+  if (comments.length === 0) {
+    container.textContent = 'No comments yet.';
+  } else {
+    comments.forEach(c => {
+      const p = document.createElement('p');
+      p.textContent = c;
+      container.appendChild(p);
+    });
+  }
+}
+
+// Kick off loading posts
+loadPosts();
+</script>
 </body>
 </html>
