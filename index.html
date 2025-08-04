@@ -1,268 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Intrusive Thoughts</title>
-<style>
-  :root {
-    --bg-dark: #0e0e0e;
-    --bg-light: #fefefe;
-    --text-dark: #e0e0e0;
-    --text-light: #222222;
-    --header-color: teal;
-    --accent-color: #ffcc00;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: Georgia, serif;
-    background-color: var(--bg-dark);
-    color: var(--text-dark);
-    transition: background-color 0.3s, color 0.3s;
-  }
-  body.light {
-    background-color: var(--bg-light);
-    color: var(--text-light);
-  }
-  header {
-    background-color: #1a1a1a;
-    padding: 1rem;
-    text-align: center;
-  }
-  body.light header {
-    background-color: #ddd;
-  }
-  header h1 {
-    margin: 0;
-    font-size: 2rem;
-    color: var(--header-color);
-  }
-  header p {
-    margin: 0;
-    font-style: italic;
-    color: #aaa;
-  }
-  main {
-    padding: 1rem 2rem;
-    max-width: 700px;
-    margin: auto;
-  }
-  article.post {
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #444;
-    padding-bottom: 1rem;
-  }
-  body.light article.post {
-    border-color: #ccc;
-  }
-  h2 {
-    color: var(--accent-color);
-  }
-  footer {
-    background-color: #1a1a1a;
-    text-align: center;
-    padding: 1rem;
-    color: #888;
-    font-size: 0.8rem;
-  }
-  body.light footer {
-    background-color: #ddd;
-    color: #555;
-  }
-  .toggle-btn {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.4rem 0.8rem;
-    cursor: pointer;
-    background-color: var(--header-color);
-    border: none;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  .toggle-btn:hover {
-    background-color: #0b6666;
-  }
-  .comments {
-    margin-top: 1rem;
-  }
-  .comment-input {
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-  .comment-input textarea {
-    width: 100%;
-    height: 50px;
-    padding: 0.5rem;
-    font-family: Georgia, serif;
-    font-size: 0.9rem;
-  }
-  .comment-input button {
-    margin-top: 0.5rem;
-    padding: 0.3rem 1rem;
-    font-weight: bold;
-    background-color: var(--header-color);
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  .comment-input button:hover {
-    background-color: #0b6666;
-  }
-  .comment-list {
-    margin-top: 0.5rem;
-    font-size: 0.85rem;
-  }
-  .comment-list p {
-    background: #333;
-    padding: 0.3rem 0.5rem;
-    margin: 0.3rem 0;
-    border-radius: 3px;
-  }
-  body.light .comment-list p {
-    background: #eee;
-    color: #111;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Intrusive Thoughts | Out Spoken Wit</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Georgia', serif;
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+    }
+    header {
+      background: #000;
+      color: teal;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 2px 10px #111;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 3em;
+      font-weight: 700;
+    }
+    header p {
+      color: gold;
+      font-style: italic;
+      margin-top: 0.5rem;
+    }
+    nav {
+      background: #111;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: teal;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      color: gold;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    .post {
+      background: #1a1a1a;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      border-left: 5px solid teal;
+      border-radius: 8px;
+    }
+    .post h2 {
+      margin-top: 0;
+      color: gold;
+    }
+    .post p {
+      line-height: 1.7;
+    }
+    .about {
+      background: #141414;
+      padding: 2rem;
+      border-radius: 10px;
+      margin-top: 3rem;
+    }
+    footer {
+      background: #000;
+      color: #888;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 4rem;
+      font-size: 0.9em;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2em;
+      }
+      .container {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-<button class="toggle-btn" id="modeToggle">Light Mode</button>
-<header>
-  <h1>Intrusive Thoughts</h1>
-  <p>by Out Spoken Wit</p>
-</header>
-<main id="postsContainer">
-  <p>Loading posts...</p>
-</main>
-<footer>
-  &copy; 2025 Out Spoken Wit. All rights reserved.
-</footer>
 
-<script>
-// Toggle dark/light mode
-const modeToggle = document.getElementById('modeToggle');
-const body = document.body;
+  <header>
+    <h1>Intrusive Thoughts</h1>
+    <p>Stories that whisper louder than silence – by Out Spoken Wit</p>
+  </header>
 
-function setMode(mode) {
-  if (mode === 'light') {
-    body.classList.add('light');
-    modeToggle.textContent = 'Dark Mode';
-    localStorage.setItem('mode', 'light');
-  } else {
-    body.classList.remove('light');
-    modeToggle.textContent = 'Light Mode';
-    localStorage.setItem('mode', 'dark');
-  }
-}
+  <nav>
+    <a href="#">Home</a>
+    <a href="#posts">Posts</a>
+    <a href="#about">About</a>
+  </nav>
 
-modeToggle.addEventListener('click', () => {
-  if (body.classList.contains('light')) {
-    setMode('dark');
-  } else {
-    setMode('light');
-  }
-});
+  <div class="container">
+    <section id="posts">
+      <div class="post">
+        <h2>Leaning on a Twig 🌒</h2>
+        <p>
+          "What should I do?" I whispered to myself. A stranger lurked in the shadows of my single-bedroom house.
+          His torch flickered across my belongings like a ghost searching for memories. It wasn’t the first time—
+          earlier this year, I was robbed, and now fear walks freely through my walls. 💭
+        </p>
+      </div>
 
-// Load saved mode
-const savedMode = localStorage.getItem('mode') || 'dark';
-setMode(savedMode);
+      <div class="post">
+        <h2>The Chair That Remembers</h2>
+        <p>
+          It creaks every time I sit. Not from age, but from pain. This chair once held dreams, now it holds regrets. 
+          My grandmother used to say, “Even broken things carry weight.” Turns out, she wasn’t just talking about furniture.
+        </p>
+      </div>
+    </section>
 
-// Load posts from posts.json
-async function loadPosts() {
-  try {
-    const res = await fetch('posts.json');
-    const posts = await res.json();
-    renderPosts(posts);
-  } catch (e) {
-    document.getElementById('postsContainer').innerHTML = '<p>Error loading posts.</p>';
-  }
-}
+    <section class="about" id="about">
+      <h2>About Me</h2>
+      <p>
+        I'm Out Spoken Wit — a storyteller, a thinker, and a dreamer. I write to give voice to the thoughts we’re too afraid to say out loud.
+        If you've ever felt too much, questioned everything, or dreamed wildly — you're home here.
+      </p>
+    </section>
+  </div>
 
-function renderPosts(posts) {
-  const container = document.getElementById('postsContainer');
-  container.innerHTML = ''; // clear loading text
+  <footer>
+    &copy; 2025 Intrusive Thoughts | Written by Out Spoken Wit
+  </footer>
 
-  posts.forEach(post => {
-    const article = document.createElement('article');
-    article.className = 'post';
-
-    const title = document.createElement('h2');
-    title.textContent = post.title;
-    article.appendChild(title);
-
-    const date = document.createElement('small');
-    date.textContent = new Date(post.date).toLocaleDateString();
-    article.appendChild(date);
-
-    const content = document.createElement('p');
-    content.textContent = post.content;
-    article.appendChild(content);
-
-    // Comment Section
-    const commentsDiv = document.createElement('div');
-    commentsDiv.className = 'comments';
-
-    const commentsTitle = document.createElement('h3');
-    commentsTitle.textContent = 'Comments';
-    commentsDiv.appendChild(commentsTitle);
-
-    // Comments List
-    const commentList = document.createElement('div');
-    commentList.className = 'comment-list';
-    commentsDiv.appendChild(commentList);
-
-    // Load comments from localStorage
-    const commentsKey = 'comments_' + post.id;
-    let comments = JSON.parse(localStorage.getItem(commentsKey)) || [];
-    updateCommentList(commentList, comments);
-
-    // Comment Input
-    const commentInputDiv = document.createElement('div');
-    commentInputDiv.className = 'comment-input';
-
-    const textarea = document.createElement('textarea');
-    textarea.placeholder = 'Write a comment...';
-    commentInputDiv.appendChild(textarea);
-
-    const submitBtn = document.createElement('button');
-    submitBtn.textContent = 'Add Comment';
-    commentInputDiv.appendChild(submitBtn);
-
-    submitBtn.addEventListener('click', () => {
-      const commentText = textarea.value.trim();
-      if (commentText) {
-        comments.push(commentText);
-        localStorage.setItem(commentsKey, JSON.stringify(comments));
-        updateCommentList(commentList, comments);
-        textarea.value = '';
-      }
-    });
-
-    commentsDiv.appendChild(commentInputDiv);
-    article.appendChild(commentsDiv);
-
-    container.appendChild(article);
-  });
-}
-
-function updateCommentList(container, comments) {
-  container.innerHTML = '';
-  if (comments.length === 0) {
-    container.textContent = 'No comments yet.';
-  } else {
-    comments.forEach(c => {
-      const p = document.createElement('p');
-      p.textContent = c;
-      container.appendChild(p);
-    });
-  }
-}
-
-// Kick off loading posts
-loadPosts();
-</script>
 </body>
 </html>
